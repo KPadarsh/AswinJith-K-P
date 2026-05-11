@@ -33,7 +33,6 @@ export default function ProjectDetails() {
   const planImg = isTraditional ? traditionalHomeInterior1 : isLuxuryHotel ? lexuryHotelInterior1 : lexuryBedRoomPlan;
   const interiorImg1 = isTraditional ? traditionalHomeInterior2 : isLuxuryHotel ? lexuryHotelInterior2 : lexuryBedRoomInterior;
   const interiorImg2 = isTraditional ? traditionalHomeInterior3 : isLuxuryHotel ? lexuryHotelInterior3 : lexuryBedRoomInterior2;
-  const showLightPNG = (!isTraditional && !isLuxuryHotel);
 
   // Lower Area Images
   const resultImg1 = isTraditional ? traditionalHome1 : isLuxuryHotel ? lexuryHotel1 : lexuryBed1;
@@ -132,12 +131,6 @@ export default function ProjectDetails() {
                   <img src={interiorImg2} alt="Interior Details" className="w-full h-full object-cover" />
                 </div>
 
-                {/* Middle overlapping transparent image (Table/Light) */}
-                {showLightPNG && (
-                  <div className="absolute top-[20%] left-[5%] w-[90%] h-[50%] flex items-center justify-center z-30">
-                    <img src={lexuryBedRoomLightPNG} alt="Light Details" className="w-full h-full object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500" style={{ filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.3))' }} />
-                  </div>
-                )}
 
                 {/* Color Palette */}
                 <div className="absolute bottom-0 right-0 flex gap-2 z-20">
