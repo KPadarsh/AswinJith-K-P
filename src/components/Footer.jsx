@@ -16,9 +16,11 @@ export default function Footer() {
             <p className="font-serif text-base md:text-lg text-primary/90 leading-relaxed mb-8">
               Want to work together or just have some questions? Send me a message and I'll get back to you in one to five business days.
             </p>
-            <button className="bg-[#f5aa1c] text-white px-8 py-3 rounded-full text-sm md:text-base font-semibold tracking-wider uppercase shadow-md hover:bg-[#e09b18] transition-colors">
-              Send Message
-            </button>
+            <Link to="/contacts">
+              <button className="bg-[#f5aa1c] text-white px-8 py-3 rounded-full text-sm md:text-base font-semibold tracking-wider uppercase shadow-md hover:bg-[#e09b18] transition-colors">
+                Send Message
+              </button>
+            </Link>
           </div>
         )}
 
@@ -28,7 +30,7 @@ export default function Footer() {
           <div className="flex flex-col gap-3">
             <h3 className="font-serif text-xl md:text-2xl text-primary/90 mb-1">Aswinjith</h3>
             <p className="text-base text-primary/60">
-              Riyadh, Saudi Arabia | <a href="tel:+966500000000" className="hover:text-primary transition-colors">+966 50 000 0000</a> | <a href="mailto:hello@aswinjith.com" className="hover:text-primary transition-colors">hello@aswinjith.com</a>
+              Riyadh, Saudi Arabia | <a href="tel:+966565759456" className="hover:text-primary transition-colors">+966 56 575 9456</a> | <a href="mailto:aswinjithkp0408@gmail.com" className="hover:text-primary transition-colors">aswinjithkp0408@gmail.com</a>
             </p>
             <p className="text-base text-primary/60 mt-1">
               © Aswinjith, {new Date().getFullYear()}

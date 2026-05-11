@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import profileImg from '../assets/profileImg.png';
@@ -20,25 +22,44 @@ export default function Home() {
       <main className="flex-1 flex flex-col md:flex-row items-center justify-center px-12 md:px-24 py-12 gap-16 md:gap-24 w-full">
         {/* Left: Circular Image */}
         <div className="flex-1 flex justify-end">
-          <div className="w-[300px] h-[300px] md:w-[480px] md:h-[480px] rounded-full overflow-hidden shrink-0 shadow-sm">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, x: -30 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="w-[300px] h-[300px] md:w-[480px] md:h-[480px] rounded-full overflow-hidden shrink-0 shadow-sm"
+          >
             <img 
               src={profileImg} 
               alt="Aswinjith" 
               className="w-full h-full object-cover object-top"
               />
-          </div>
+          </motion.div>
         </div>
 
         {/* Right: Text Content */}
         <div className="flex-1 flex flex-col items-start max-w-xl">
-          <h1 className="font-serif text-4xl md:text-5xl leading-[1.2] text-primary/90">
+          <motion.h1 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+            className="font-serif text-4xl md:text-5xl leading-[1.2] text-primary/90"
+          >
             Hi, I'm Aswinjith, an <br />
             Interior Designer <br />
             based Saudi Arabia
-          </h1>
-          <button className="mt-10 bg-accent text-white px-8 py-3.5 rounded-full text-xs md:text-sm font-semibold tracking-widest uppercase shadow-md hover:bg-accent/90 transition-colors">
-            Reach Out
-          </button>
+          </motion.h1>
+          <Link to="/contacts">
+            <motion.button 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="mt-10 bg-accent text-white px-8 py-3.5 rounded-full text-xs md:text-sm font-semibold tracking-widest uppercase shadow-md hover:bg-accent/90 transition-colors"
+            >
+              Reach Out
+            </motion.button>
+          </Link>
         </div>
       </main>
       </div>
@@ -46,7 +67,13 @@ export default function Home() {
       {/* About & Experience Section */}
       <section className="px-12 md:px-24 py-24 flex flex-col gap-24 w-full max-w-7xl mx-auto">
         {/* About Row */}
-        <div className="flex flex-col md:flex-row gap-4 md:gap-32 items-start">
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row gap-4 md:gap-32 items-start"
+        >
           <div className="md:w-1/3 pt-1">
             <span className="text-sm tracking-widest text-primary/60 uppercase font-semibold flex items-center gap-4">
               <span className="w-6 md:w-8 h-[1px] bg-primary/40 block"></span>
@@ -58,10 +85,16 @@ export default function Home() {
               From a young age, I was fascinated by the art of designing interiors and spaces that create a sense of beauty and harmony.
             </p>
           </div>
-        </div>
+        </motion.div>
 
         {/* Experience Row */}
-        <div className="flex flex-col md:flex-row gap-4 md:gap-32 items-start">
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row gap-4 md:gap-32 items-start"
+        >
           <div className="md:w-1/3 pt-1">
             <span className="text-sm tracking-widest text-primary/60 uppercase font-semibold flex items-center gap-4">
               <span className="w-6 md:w-8 h-[1px] bg-primary/40 block"></span>
@@ -73,7 +106,28 @@ export default function Home() {
               Over the years, I have honed my skills and expanded my knowledge to create interior that are not only visually stunning but also practical and comfortable.
             </p>
           </div>
-        </div>
+        </motion.div>
+
+        {/* Technical Skills Row */}
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row gap-4 md:gap-32 items-start"
+        >
+          <div className="md:w-1/3 pt-1">
+            <span className="text-sm tracking-widest text-primary/60 uppercase font-semibold flex items-center gap-4">
+              <span className="w-6 md:w-8 h-[1px] bg-primary/40 block"></span>
+              Technical Skills
+            </span>
+          </div>
+          <div className="md:w-2/3">
+            <p className="font-serif text-[18px] text-primary/70 leading-relaxed max-w-2xl">
+              AutoCAD | SketchUp | Lumion | Enscape | 3ds Max | V-Ray | Photoshop | Coohom | D5 Render | MS Office
+            </p>
+          </div>
+        </motion.div>
       </section>
 
       {/* Renderings Intro */}
@@ -99,8 +153,24 @@ export default function Home() {
       {/* Renderings Grid */}
       <div className="w-full bg-gradient-to-b from-[#ffecb8] to-[#fff6e5]">
         <section className="px-12 md:px-24 py-16 md:py-24 w-full max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 items-start">
-            <div 
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={{
+              visible: {
+                transition: {
+                  staggerChildren: 0.15
+                }
+              }
+            }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 items-start"
+          >
+            <motion.div 
+              variants={{
+                hidden: { opacity: 0, y: 50 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+              }}
               className="w-full overflow-hidden shadow-md hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 cursor-pointer"
               onClick={() => setSelectedImage(highlight1)}
             >
@@ -109,8 +179,12 @@ export default function Home() {
                 alt="Portfolio Highlight 1" 
                 className="w-full aspect-[4/5] object-cover hover:scale-105 transition-transform duration-700 ease-out" 
               />
-            </div>
-            <div 
+            </motion.div>
+            <motion.div 
+              variants={{
+                hidden: { opacity: 0, y: 50 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+              }}
               className="w-full overflow-hidden shadow-md hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 cursor-pointer lg:mt-8"
               onClick={() => setSelectedImage(highlight2)}
             >
@@ -119,8 +193,12 @@ export default function Home() {
                 alt="Portfolio Highlight 2" 
                 className="w-full aspect-[4/5] object-cover hover:scale-105 transition-transform duration-700 ease-out" 
               />
-            </div>
-            <div 
+            </motion.div>
+            <motion.div 
+              variants={{
+                hidden: { opacity: 0, y: 50 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+              }}
               className="w-full overflow-hidden shadow-md hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 cursor-pointer"
               onClick={() => setSelectedImage(highlight3)}
             >
@@ -129,8 +207,12 @@ export default function Home() {
                 alt="Portfolio Highlight 3" 
                 className="w-full aspect-[4/5] object-cover hover:scale-105 transition-transform duration-700 ease-out" 
               />
-            </div>
-            <div 
+            </motion.div>
+            <motion.div 
+              variants={{
+                hidden: { opacity: 0, y: 50 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+              }}
               className="w-full overflow-hidden shadow-md hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 cursor-pointer lg:mt-8"
               onClick={() => setSelectedImage(highlight4)}
             >
@@ -139,8 +221,8 @@ export default function Home() {
                 alt="Portfolio Highlight 4" 
                 className="w-full aspect-[4/5] object-cover hover:scale-105 transition-transform duration-700 ease-out" 
               />
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </section>
       </div>
       <Footer />

@@ -57,7 +57,7 @@ export default function ProjectDetails() {
     area: isTraditional ? "3200 ft²" : isLuxuryHotel ? "15,000 ft²" : "2800 ft²",
     date: isTraditional ? "2023" : isLuxuryHotel ? "2024" : "2022",
     status: isTraditional ? "Completed" : isLuxuryHotel ? "In Progress" : "Under construction",
-    tools: "Photoshop, SketchUp"
+    tools: "AutoCAD | SketchUp | Coohom | D5 Render"
   };
 
   const resultLabels = {
