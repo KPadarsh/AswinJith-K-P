@@ -14,10 +14,5 @@ body {
   background-color: var(--color-surface);
   color: var(--color-primary);
   font-family: var(--font-sans);
-}
-
-/* Ensure images always sit above the spotlight overlay */
-img {
-  position: relative;
-  z-index: 50;
+  overflow-x: hidden;
 }

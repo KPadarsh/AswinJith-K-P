@@ -1,9 +1,18 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useRef } from 'react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import FloatingArchitectObject from '../components/FloatingArchitectObject';
+import useMagnetic from '../hooks/useMagnetic';
 
 export default function Contacts() {
+  const containerRef = useRef(null);
+  const titleRef = useRef(null);
+  const magneticMailBtnRef = useMagnetic();
+  const magneticWaBtnRef = useMagnetic();
+  const magneticInstaBtnRef = useMagnetic();
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -29,52 +38,65 @@ export default function Contacts() {
     window.location.href = mailtoLink;
   };
 
+  useGSAP(() => {
+    // 1. Entrance timeline
+    const tl = gsap.timeline();
+
+    tl.fromTo(titleRef.current,
+      { opacity: 0, y: 35 },
+      { opacity: 1, y: 0, duration: 1.0, ease: 'power4.out' }
+    );
+
+    tl.fromTo('.contacts-left-item',
+      { opacity: 0, x: -30 },
+      { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out', stagger: 0.15 },
+      '-=0.6'
+    );
+
+    tl.fromTo('.contacts-form-item',
+      { opacity: 0, x: 30 },
+      { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out', stagger: 0.1 },
+      '-=0.8'
+    );
+  }, { scope: containerRef });
+
   return (
-    <div className="min-h-screen flex flex-col font-sans text-primary">
+    <div ref={containerRef} className="min-h-screen flex flex-col font-sans text-primary relative">
+      {/* Floating Blueprint Design Object */}
+      <FloatingArchitectObject />
+
       {/* Navigation */}
-      <div className="bg-[#fff5d9]">
+      <div className="bg-[#fff5d9] relative z-10">
         <Navbar />
       </div>
 
-      <main className="flex-1 w-full max-w-7xl mx-auto px-12 md:px-24 py-16 md:py-24 overflow-hidden">
-        <motion.h1 
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      <main className="flex-1 w-full max-w-7xl mx-auto px-12 md:px-24 py-16 md:py-24 overflow-hidden relative z-10">
+        <h1 
+          ref={titleRef}
           className="font-serif text-3xl md:text-5xl text-primary/90 leading-[1.2] mb-16"
         >
           Contact me here
-        </motion.h1>
+        </h1>
         
         <div className="flex flex-col md:flex-row gap-16 md:gap-24">
           {/* Left Column */}
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-            className="flex-1 flex flex-col gap-8"
-          >
-            <p className="font-serif text-[18px] md:text-[20px] text-primary/90 leading-relaxed">
+          <div className="flex-1 flex flex-col gap-8">
+            <p className="contacts-left-item font-serif text-[18px] md:text-[20px] text-primary/90 leading-relaxed">
               If you are interested in learning more about my work, discussing a potential project, or have any questions or comments, please feel free to contact me using the following information:
             </p>
-            <div className="font-serif text-[18px] md:text-[20px] text-primary/90 leading-relaxed">
+            <div className="contacts-left-item font-serif text-[18px] md:text-[20px] text-primary/90 leading-relaxed">
               <p>Tel.: +966 56 575 9456</p>
               <p>Email: aswinjithkp0408@gmail.com</p>
             </div>
-            <p className="font-serif text-[18px] md:text-[20px] text-primary/90 leading-relaxed">
+            <p className="contacts-left-item font-serif text-[18px] md:text-[20px] text-primary/90 leading-relaxed">
               I look forward to hearing from you and the opportunity to collaborate on your next project.
             </p>
-          </motion.div>
+          </div>
 
           {/* Right Column */}
-          <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
-            className="flex-1 w-full max-w-xl"
-          >
+          <div className="flex-1 w-full max-w-xl">
             <form className="flex flex-col gap-6">
-              <div className="flex flex-col gap-2">
+              <div className="contacts-form-item flex flex-col gap-2">
                 <label className="text-primary/70 font-serif text-[15px]">Name*</label>
                 <input 
                   type="text" 
@@ -85,7 +107,7 @@ export default function Contacts() {
                   className="bg-[#f0eadd] px-4 py-3 rounded-md focus:outline-none focus:ring-1 focus:ring-primary/20 w-full placeholder:text-primary/40 font-serif"
                 />
               </div>
-              <div className="flex flex-col gap-2">
+              <div className="contacts-form-item flex flex-col gap-2">
                 <label className="text-primary/70 font-serif text-[15px]">Email*</label>
                 <input 
                   type="email" 
@@ -96,7 +118,7 @@ export default function Contacts() {
                   className="bg-[#f0eadd] px-4 py-3 rounded-md focus:outline-none focus:ring-1 focus:ring-primary/20 w-full placeholder:text-primary/40 font-serif"
                 />
               </div>
-              <div className="flex flex-col gap-2">
+              <div className="contacts-form-item flex flex-col gap-2">
                 <label className="text-primary/70 font-serif text-[15px]">Message*</label>
                 <textarea 
                   name="message"
@@ -108,21 +130,23 @@ export default function Contacts() {
                 ></textarea>
               </div>
               
-              <div className="flex flex-wrap items-center gap-4 mt-4">
+              <div className="contacts-form-item flex flex-wrap items-center gap-4 mt-4">
                 <button 
+                  ref={magneticMailBtnRef}
                   type="button" 
                   onClick={handleSendMail}
-                  className="bg-accent text-white px-8 py-3 rounded-full text-sm font-bold uppercase tracking-wider shadow-md hover:bg-accent/90 transition-all hover:scale-105 active:scale-95"
+                  className="bg-accent text-white px-8 py-3 rounded-full text-sm font-bold uppercase tracking-wider shadow-md hover:bg-accent/90 transition-colors cursor-pointer"
                 >
                   SEND MAIL
                 </button>
                 
                 <div className="flex items-center gap-3">
                   <a 
+                    ref={magneticWaBtnRef}
                     href="https://wa.me/966565759456" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="p-3 rounded-full bg-[#25D366] text-white shadow-md hover:bg-[#20ba59] transition-all hover:scale-110 active:scale-90 flex items-center justify-center"
+                    className="p-3 rounded-full bg-[#25D366] text-white shadow-md hover:bg-[#20ba59] transition-colors flex items-center justify-center cursor-pointer"
                     title="Chat on WhatsApp"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -131,10 +155,11 @@ export default function Contacts() {
                     </svg>
                   </a>
                   <a 
+                    ref={magneticInstaBtnRef}
                     href="https://www.instagram.com/__.aswin._.04.__?igsh=MXRsMG0xdHBpaHE1cw==" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="p-3 rounded-full bg-gradient-to-tr from-[#f09433] via-[#e6683c] to-[#bc1888] text-white shadow-md hover:brightness-110 transition-all hover:scale-110 active:scale-90 flex items-center justify-center"
+                    className="p-3 rounded-full bg-gradient-to-tr from-[#f09433] via-[#e6683c] to-[#bc1888] text-white shadow-md hover:brightness-110 transition-all flex items-center justify-center cursor-pointer"
                     title="Follow on Instagram"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -146,7 +171,7 @@ export default function Contacts() {
                 </div>
               </div>
             </form>
-          </motion.div>
+          </div>
         </div>
       </main>
       

@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { useParams } from 'react-router-dom';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { useParams } from 'react-router-dom';
+import FloatingArchitectObject from '../components/FloatingArchitectObject';
+
+// Images imports
 import lexuryBedRoomLightPNG from '../assets/lexuryBedRoomLightPNG.png';
 import lexuryBedRoomPlan from '../assets/lexuryBedRoomPlan.png';
 import lexuryBedRoomInterior from '../assets/lexuryBedRoomInterior.jpeg';
@@ -24,6 +29,8 @@ import lexuryHotelInterior3 from '../assets/lexuryHotelInterior3.jpeg';
 
 export default function ProjectDetails() {
   const { id } = useParams();
+  const containerRef = useRef(null);
+  const titleRef = useRef(null);
 
   const title = id ? decodeURIComponent(id) : "Modern loft";
   const isTraditional = title === "Traditional Home";
@@ -65,72 +72,157 @@ export default function ProjectDetails() {
     label3: isTraditional ? "Courtyard View" : isLuxuryHotel ? "Lounge Area" : "Relaxation Area"
   };
 
+  useGSAP(() => {
+    // 1. Entrance animation for Title
+    gsap.fromTo(titleRef.current,
+      { opacity: 0, y: 40 },
+      { opacity: 1, y: 0, duration: 1.0, ease: 'power4.out' }
+    );
+
+    // 2. Project details split reveal
+    const detailsTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '.details-section',
+        start: 'top 85%',
+        toggleActions: 'play none none none',
+      }
+    });
+
+    detailsTl.fromTo('.details-title',
+      { opacity: 0, x: -30 },
+      { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' }
+    );
+
+    detailsTl.fromTo('.details-text',
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.15 },
+      '-=0.6'
+    );
+
+    detailsTl.fromTo('.detail-item',
+      { opacity: 0, y: 15 },
+      { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', stagger: 0.08 },
+      '-=0.4'
+    );
+
+    // 3. Design plans image wipe/parallax
+    gsap.fromTo('.plan-image',
+      { scale: 1.12, opacity: 0 },
+      {
+        scale: 1,
+        opacity: 1,
+        duration: 1.2,
+        ease: 'power3.out',
+        stagger: 0.15,
+        scrollTrigger: {
+          trigger: '.plans-section',
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        }
+      }
+    );
+
+    // 4. Staggered reveal for results grid
+    gsap.fromTo('.result-card',
+      { opacity: 0, y: 60 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1.2,
+        ease: 'power4.out',
+        stagger: 0.15,
+        scrollTrigger: {
+          trigger: '.results-section',
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        }
+      }
+    );
+  }, { scope: containerRef });
+
   return (
-    <div className="min-h-screen flex flex-col font-sans text-primary">
+    <div ref={containerRef} className="min-h-screen flex flex-col font-sans text-primary relative">
+      {/* Floating Blueprint Design Object */}
+      <FloatingArchitectObject />
+
       {/* Top Navbar Section */}
-      <div className='bg-[#fff6e5]'>
+      <div className="bg-[#fff6e5] relative z-10">
         <Navbar />
       </div>
 
-      <div className="flex-1 bg-[#fff6e5]">
+      <div className="flex-1 bg-[#fff6e5] relative z-10">
         <div className="px-12 md:px-24 py-16 w-full max-w-7xl mx-auto">
           {/* Main Title */}
-          <h1 className="font-serif text-5xl md:text-6xl text-primary/90 mb-24 mt-8">
+          <h1 
+            ref={titleRef}
+            className="font-serif text-5xl md:text-6xl text-primary/90 mb-24 mt-8"
+          >
             {title}
           </h1>
 
           {/* Project Details Section */}
-          <div className="flex flex-col md:flex-row gap-12 md:gap-24 mb-32">
+          <div className="details-section flex flex-col md:flex-row gap-12 md:gap-24 mb-32">
             <div className="w-full md:w-1/3">
-              <h2 className="font-serif text-3xl text-primary/90">Project details</h2>
+              <h2 className="details-title font-serif text-3xl text-primary/90">Project details</h2>
             </div>
             
             <div className="w-full md:w-2/3">
-              <p className="text-primary/70 leading-relaxed font-serif text-[17px] mb-6">
+              <p className="details-text text-primary/70 leading-relaxed font-serif text-[17px] mb-6">
                 {projectDescription1}
               </p>
-              <p className="text-primary/70 leading-relaxed font-serif text-[17px] mb-12">
+              <p className="details-text text-primary/70 leading-relaxed font-serif text-[17px] mb-12">
                 {projectDescription2}
               </p>
               
               <div className="grid grid-cols-2 gap-y-6 text-primary/70 font-serif text-[17px]">
-                <div>Area of site</div>
-                <div>{projectDetails.area}</div>
+                <div className="detail-item font-semibold">Area of site</div>
+                <div className="detail-item">{projectDetails.area}</div>
                 
-                <div>Date</div>
-                <div>{projectDetails.date}</div>
+                <div className="detail-item font-semibold">Date</div>
+                <div className="detail-item">{projectDetails.date}</div>
                 
-                <div>Status of the project</div>
-                <div>{projectDetails.status}</div>
+                <div className="detail-item font-semibold">Status of the project</div>
+                <div className="detail-item">{projectDetails.status}</div>
                 
-                <div>Tools used</div>
-                <div>{projectDetails.tools}</div>
+                <div className="detail-item font-semibold">Tools used</div>
+                <div className="detail-item">{projectDetails.tools}</div>
               </div>
             </div>
           </div>
 
           {/* Design Plans Section */}
-          <div className="mb-24">
+          <div className="plans-section mb-24">
             <h2 className="font-serif text-3xl text-primary/90 mb-16">Design plans</h2>
             
             <div className="flex flex-col md:flex-row gap-8 items-stretch">
               {/* Left Blueprint */}
               <div className="w-full md:w-1/2 min-h-[400px] bg-white flex items-center justify-center text-gray-400 font-serif border border-gray-100 shadow-sm overflow-hidden relative">
-                <img src={planImg} alt="Blueprint" className="w-full h-full object-cover absolute inset-0" />
+                <img 
+                  src={planImg} 
+                  alt="Blueprint" 
+                  className="plan-image w-full h-full object-cover absolute inset-0" 
+                />
               </div>
               
               {/* Right Collage */}
               <div className="w-full md:w-1/2 relative min-h-[400px] md:min-h-[500px]">
-                {/* Top right image (Interior/Plants) */}
+                {/* Top right image */}
                 <div className="absolute top-0 right-0 w-[65%] h-[60%] bg-[#e8e8e8] flex items-center justify-center text-gray-500 text-sm overflow-hidden shadow-sm">
-                  <img src={interiorImg1} alt="Interior" className="w-full h-full object-cover" />
+                  <img 
+                    src={interiorImg1} 
+                    alt="Interior" 
+                    className="plan-image w-full h-full object-cover" 
+                  />
                 </div>
                 
-                {/* Bottom left image (Kitchen/Counter) */}
+                {/* Bottom left image */}
                 <div className="absolute bottom-16 left-0 w-[60%] h-[50%] bg-[#dcdcdc] flex items-center justify-center text-gray-500 text-sm overflow-hidden shadow-sm z-10">
-                  <img src={interiorImg2} alt="Interior Details" className="w-full h-full object-cover" />
+                  <img 
+                    src={interiorImg2} 
+                    alt="Interior Details" 
+                    className="plan-image w-full h-full object-cover" 
+                  />
                 </div>
-
 
                 {/* Color Palette */}
                 <div className="absolute bottom-0 right-0 flex gap-2 z-20">
@@ -144,30 +236,42 @@ export default function ProjectDetails() {
           </div>
 
           {/* Results Section */}
-          <div className="mb-32">
+          <div className="results-section mb-32">
             <h2 className="font-serif text-3xl text-primary/90 mb-16">Results</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
               {/* Result Image 1 */}
-              <div className="w-full">
+              <div className="result-card w-full">
                 <div className="w-full aspect-[3/4] bg-[#e8e8e8] flex items-center justify-center text-gray-500 text-sm overflow-hidden mb-4 shadow-sm">
-                  <img src={resultImg1} alt="Master Bedroom" className="w-full h-full object-cover" />
+                  <img 
+                    src={resultImg1} 
+                    alt={resultLabels.label1} 
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-out" 
+                  />
                 </div>
                 <span className="font-serif text-primary/70 text-[17px]">{resultLabels.label1}</span>
               </div>
 
               {/* Result Image 2 */}
-              <div className="w-full">
+              <div className="result-card w-full">
                 <div className="w-full aspect-[2/3] bg-[#dcdcdc] flex items-center justify-center text-gray-500 text-sm overflow-hidden mb-4 shadow-sm">
-                  <img src={resultImg2} alt="Bedroom Interior" className="w-full h-full object-cover" />
+                  <img 
+                    src={resultImg2} 
+                    alt={resultLabels.label2} 
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-out" 
+                  />
                 </div>
                 <span className="font-serif text-primary/70 text-[17px]">{resultLabels.label2}</span>
               </div>
 
               {/* Result Image 3 */}
-              <div className="w-full">
+              <div className="result-card w-full">
                 <div className="w-full aspect-[4/3] bg-[#e8e8e8] flex items-center justify-center text-gray-500 text-sm overflow-hidden mb-4 shadow-sm">
-                  <img src={resultImg3} alt="Relaxation Area" className="w-full h-full object-cover" />
+                  <img 
+                    src={resultImg3} 
+                    alt={resultLabels.label3} 
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-out" 
+                  />
                 </div>
                 <span className="font-serif text-primary/70 text-[17px]">{resultLabels.label3}</span>
               </div>
